@@ -5,6 +5,7 @@ use App\Http\Controllers\studentController;
 use App\Http\Controllers\classesController;
 use App\Http\Controllers\subjectController;
 use App\Http\Controllers\teacherController;
+use App\Http\Controllers\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,14 +26,14 @@ use App\Http\Controllers\teacherController;
 // Login (HOME PAGE) Route
 Auth::routes();
 
-// Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showlogin' ])->middleware(['alreadyLoggedIn']);
-Route::post('loginToTheDashboard', [App\Http\Controllers\Auth\LoginController::class, 'loginFunction' ])->middleware(['alreadyLoggedIn']);
+// Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home'0);
+Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showlogin' ]);
+Route::post('loginToTheDashboard', [App\Http\Controllers\Auth\LoginController::class, 'loginFunction' ]);
 
 // Main Dashboard
 
 // LOGOUT User
-Route::get('logout', [App\Http\Controllers\Auth\LoginController::class, 'logOutUser' ]);
+Route::post('logout', [App\Http\Controllers\Auth\ExitController::class, 'logOutUser' ])->name('logoutuser')->middleware('auth');
 
 // After The user wants to login
 Route::get('register', [App\Http\Controllers\Auth\RegisterController::class, 'showsignup']);
@@ -40,7 +41,7 @@ Route::get('register', [App\Http\Controllers\Auth\RegisterController::class, 'sh
 Route::post('createAnAccount', [App\Http\Controllers\Auth\RegisterController::class, 'signUpFunction' ]);
 
 // START Routes For Student Section
-Route::middleware(['isLogged','auth'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('MainDashboard', [studentController::class, 'index' ]);
     // Routes that require authentication go here
     Route::get('addNewStudent', [studentController::class, 'show' ]);
@@ -86,14 +87,14 @@ Route::middleware(['isLogged','auth'])->group(function () {
     // END Routes For Class Section
 
     // START Route For Setting Section
-    Route::get('settings', [accountController::class, 'settingFunction' ]);
-    Route::get('EditAccount', [accountController::class, 'EditAccount']);
+    Route::get('settings', [SettingsController::class, 'settingFunction' ]);
+    Route::get('EditAccount', [SettingsController::class, 'EditAccount']);
 
     route::get('settings', function () {
         return view('settingsDashboard');
     })->middleware('isLogged');
-    Route::get('settings/{account}/settings', [accountController::class, 'editSettings' ]);
-    Route::put('/settings/{account}', [accountController::class, 'updateSettings' ]);
-    Route::delete('settingsDelete/{account}', [accountController::class, 'deleteAccount' ]);
+    Route::get('settings/{account}/settings', [SettingsController::class, 'editSettings' ]);
+    Route::put('/settings/{account}', [SettingsController::class, 'updateSettings' ]);
+    Route::delete('settingsDelete/{account}', [SettingsController::class, 'deleteAccount' ]);
     // END Route For Setting Section
 });

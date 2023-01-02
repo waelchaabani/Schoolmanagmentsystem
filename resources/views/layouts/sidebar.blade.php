@@ -77,8 +77,15 @@
             <img src="https://img.icons8.com/external-kmg-design-flat-kmg-design/32/000000/external-log-out-user-interface-kmg-design-flat-kmg-design.png"
                 class="h-6 w-6 mr-4 text-gray-400 hover:text-indigo-600 transition duration-200" />
         </div>
-        <a href="logout"
-            class="block font-semibold text-gray-500 hover:text-indigo-600 transition duration-200">Logout</a>
+        <form id="form-logout-user" style="display: none" action="{{ route('logoutuser') }}" method="post">
+            @csrf
+        </form>
+
+        <a href="{{route('logoutuser')}}"
+            onclick="event.preventDefault(); document.getElementById('form-logout-user').submit();"
+            class="block font-semibold text-gray-500 hover:text-indigo-600 transition duration-200">
+            Logout
+        </a>
     </div>
 
 </div>

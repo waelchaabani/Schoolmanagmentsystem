@@ -14,11 +14,9 @@ class Account extends Authenticatable implements CanResetPassword
     use Notifiable;
 
     protected $table = 'accounts';
-    public $fillable = [
-        'fullName',
-        'username',
-        'email',
-        'password'
+    public $guarded = [
+
+
     ];
     public $timestamps = false;
 }

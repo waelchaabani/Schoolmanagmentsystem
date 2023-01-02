@@ -50,6 +50,10 @@
                     <input class="pl-2 outline-none border-none" type="password" name="password" id=""
                         placeholder="Password" required />
                 </div>
+                <label class="control control-checkbox">
+                    <label class="cairo font-1" for="remember" style="cursor: pointer;">remeber me </label>
+                    <input name="remember" type="checkbox" id="remember" />
+                    <div class="control_indicator"></div>
                 <button type="submit"
                     class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Login</button>
                 <span class="text-sm ml-2 hover:text-blue-500 cursor-pointer"><a href="register">Create an account

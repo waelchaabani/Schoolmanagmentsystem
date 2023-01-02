@@ -41,40 +41,56 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest');
     }
     public function loginFunction(Request $request)
     {
+
         $request->validate([
             'email'=>'required|email',
             'password'=>'required|min:8'
         ]);
+
         $account = Account::where('email', '=', $request->email)->first();
-        if ($account) {
-            if (Hash::check($request->password, $account->password)) {
-                $role = Account::where('role', '=', 'ADMIN');
-                if ($role) {
-                    $request->session()->put('loginName', $account->fullName);
-                    return redirect('MainDashboard');
-                } else {
-                    return back()->with('fail', 'Your Account Only Have Access To VIEW !');
-                }
-            } else {
-                return back()->with('fail', 'Wrong Password Entered, Please Try Again!');
-            }
-        } else {
-            return back()->with('fail', 'This Email Address Is NOT Registered!');
+
+
+        if (auth()->guard()->attempt(['email' => $request->email, 'password' => $request->password])) {
+
+            auth()->shouldUse('web');
+
+            $request->session()->regenerate();
+
+            return redirect('MainDashboard');
         }
+
+        return back()->with('fail', 'This Email Address or Password Is NOT Registered!');
+
+        // if ($account) {
+        //     if (Hash::check($request->password, $account->password)) {
+        //         $role = Account::where('role', '=', 'ADMIN');
+        //         if ($role) {
+        //             $request->session()->put('loginName', $account->fullName);
+        //             return redirect('MainDashboard');
+        //         } else {
+        //             return back()->with('fail', 'Your Account Only Have Access To VIEW !');
+        //         }
+        //     } else {
+        //         return back()->with('fail', 'Wrong Password Entered, Please Try Again!');
+        //     }
+        // } else {
+        //     return back()->with('fail', 'This Email or Password Address Is NOT Registered!');
+        // }
     }
     public function showlogin()
     {
         return view('auth.login');
     }
-    public function logOutUser()
-    {
-        if (session()->has('loginName')) {
-            session()->pull('loginName');
-            return redirect('/');
-        }
-    }
+    // public function logOutUser()
+    // {
+    //     return "N";
+    //     if (session()->has('loginName')) {
+    //         session()->pull('loginName');
+    //         return redirect('/');
+    //     }
+    // }
 }

@@ -5,12 +5,10 @@
 <body>
     <!--- Email Reset Password HTML Code START--->
     <div class="h-screen flex">
-        @if (session('status'))
-        <div class="alert alert-success" role="alert">
-            {{ session('status') }}
-        </div>
-        @endif
+
         <div class="flex w-1/2 bg-gradient-to-tr from-blue-800 to-purple-700 i justify-around items-center">
+
+
             <div>
                 <h1 class="text-white font-bold text-4xl font-sans">Welcome To</h1>
                 <p class="text-white mt-1">School Managment System</p>
@@ -20,7 +18,11 @@
 
             <form method="POST" action="{{ route('password.email') }}">
                 @csrf
-
+                @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+                @endif
                 <div class="row mb-3">
                     <label for="email" class="text-gray-800 font-bold text-2xl mb-1">Email Adress</label>
 
